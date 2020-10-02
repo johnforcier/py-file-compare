@@ -1,13 +1,3 @@
-"""
-compare.py takes two arguments: old_file_name.ext, new_file_name.ext
-
-Example:
-|
-| compare.py file1.csv file2.csv
-|
-| compare.py file1.xlsx file2.xlsx
-|
-"""
 import pandas as pd
 from pathlib import Path
 import sys
@@ -18,9 +8,12 @@ def file_diff(path_OLD, path_NEW, index_col):
     # check to see what file type and read into pandas
     if str(path_OLD).lower().endswith('.csv'):
         OLD = pd.read_csv(path_OLD, index_col=index_col).fillna(0)
-        NEW = pd.read_csv(path_NEW, index_col=index_col).fillna(0)
     elif str(path_OLD).lower().endswith('.xlsx'):
-        OLD = pd.read_excel(path_OLD, index_col=index_col).fillna(0)
+        OLD = pd.read_excel(path_OLD, index_col=index_col).fillna(0)   
+
+    if str(path_NEW).lower().endswith('csv'):
+        NEW = pd.read_csv(path_NEW, index_col=index_col).fillna(0)
+    elif str(path_NEW).lower().endswith('xlsx'):
         NEW = pd.read_excel(path_NEW, index_col=index_col).fillna(0)
 
     # Find differences
@@ -77,7 +70,7 @@ def file_diff(path_OLD, path_NEW, index_col):
 
     # set format over range
     ## highlight changed cells
-    worksheet.conditional_format('A1:ZZ1000', {'type': 'text',
+    worksheet.conditional_format('A1:ALL100000', {'type': 'text',
                                             'criteria': 'containing',
                                             'value':'→',
                                             'format': change_fmt})
@@ -100,7 +93,7 @@ def main():
     path_NEW = Path(sys.argv[2])
 
     # get index col from data either csv or xlxs
-    if sys.argv[1].lower().endswith('.csv'):
+    if sys.argv[2].lower().endswith('.csv'):
         df = pd.read_csv(path_NEW)
     elif sys.argv[2].lower().endswith('.xlsx'):
         df = pd.read_excel(path_NEW)
