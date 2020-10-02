@@ -1,5 +1,5 @@
 # py-file-compare
-compare.py takes two arguments: old_file_name.ext, new_file_name.ext
+compare.py takes two arguments: old_file_name, new_file_name
 
 Example:
 compare.py file_path_1.csv file_path_2.csv
