@@ -87,7 +87,15 @@ def file_diff(path_OLD, path_NEW, index_col):
     print('\nDone.\n')
 
 
-def main():   
+def main(): 
+
+    if len(sys.argv) == 1:
+        print('\nPlease Provide File Paths To Compare Them')
+        sys.exit()
+    elif len(sys.argv) == 2:
+        print('\nSo Close, You Almost Had It... You Need Two File Paths To Compare Them')
+        sys.exit()
+    
     # get file name from args
     path_OLD = Path(sys.argv[1])
     path_NEW = Path(sys.argv[2])
