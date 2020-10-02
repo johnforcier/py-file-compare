@@ -16,7 +16,7 @@ def file_diff(path_OLD, path_NEW, index_col):
     elif str(path_NEW).lower().endswith('xlsx'):
         NEW = pd.read_excel(path_NEW, index_col=index_col).fillna(0)
 
-    # Find differences
+    # find differences
     dfDiff = NEW.copy()
     droppedRows = []
     newRows = []
@@ -44,7 +44,7 @@ def file_diff(path_OLD, path_NEW, index_col):
 
     dfDiff = dfDiff.sort_index().fillna('')
 
-    # Save output as excel and format
+    # save output as excel and format
     fname = '{} vs {}.xlsx'.format(path_OLD.stem,path_NEW.stem)
     writer = pd.ExcelWriter(fname, engine='xlsxwriter')
 
@@ -59,11 +59,6 @@ def file_diff(path_OLD, path_NEW, index_col):
     worksheet.set_default_row(15)
 
     # define formats
-    ## date_fmt = workbook.add_format({'align': 'center', 'num_format': 'yyyy-mm-dd'})
-    ## center_fmt = workbook.add_format({'align': 'center'})
-    ## number_fmt = workbook.add_format({'align': 'center', 'num_format': '#,##0.00'})
-    ## cur_fmt = workbook.add_format({'align': 'center', 'num_format': '$#,##0.00'})
-    ## perc_fmt = workbook.add_format({'align': 'center', 'num_format': '0%'})
     rmvd_fmt = workbook.add_format({'font_color': '#E0E0E0'})
     change_fmt = workbook.add_format({'font_color': '#FF0000', 'bg_color':'#B1B3B3'})
     add_fmt = workbook.add_format({'font_color': '#32CD32','bold':True})
@@ -105,6 +100,21 @@ def main():
         df = pd.read_csv(path_NEW)
     elif sys.argv[2].lower().endswith('.xlsx'):
         df = pd.read_excel(path_NEW)
+    else:
+        print('\nThe File Paths Need The Extention .csv or .xlsx')
+        sys.exit()
+
+    if sys.argv[1].lower().endswith('.csv'):
+        argv1 = '\n{} Loaded'.format(str(sys.argv[1]))
+        argv2 = '\n{} Loaded'.format(str(sys.argv[2]))
+        print(argv1, argv2)
+    elif sys.argv[1].lower().endswith('.xlsx'):
+        argv1 = '\n{} Loaded'.format(str(sys.argv[1]))
+        argv2 = '\n{} Loaded'.format(str(sys.argv[2]))
+        print(argv1, argv2)
+    else:
+        print('\nThe File Paths Need The Extention .csv or .xlsx')
+        sys.exit()
 
     # set the index column as the first column.
     ## future: add argument to indicate index column if not in first row 
