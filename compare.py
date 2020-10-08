@@ -11,7 +11,7 @@ def file_diff(path_OLD, path_NEW, index_col):
     elif str(path_OLD).lower().endswith('.xlsx'):
         OLD = pd.read_excel(path_OLD, index_col=index_col).fillna(0)   
 
-    if str(path_NEW).lower().endswith('csv'):
+    if str(path_NEW).lower().endswith('.csv'):
         NEW = pd.read_csv(path_NEW, index_col=index_col).fillna(0)
     elif str(path_NEW).lower().endswith('xlsx'):
         NEW = pd.read_excel(path_NEW, index_col=index_col).fillna(0)
@@ -23,11 +23,12 @@ def file_diff(path_OLD, path_NEW, index_col):
 
     cols_OLD = OLD.columns
     cols_NEW = NEW.columns
-    sharedCols = list(set(cols_OLD).intersection(cols_NEW))
+
+    intersectCols = list(set(cols_OLD).intersection(cols_NEW))
 
     for row in dfDiff.index:
         if (row in OLD.index) and (row in NEW.index):
-            for col in sharedCols:
+            for col in intersectCols:
                 value_OLD = OLD.loc[row,col]
                 value_NEW = NEW.loc[row,col]
                 if value_OLD==value_NEW:
@@ -42,6 +43,13 @@ def file_diff(path_OLD, path_NEW, index_col):
             droppedRows.append(row)
             dfDiff = dfDiff.append(OLD.loc[row,:])
 
+    diffCols = cols_NEW.difference(cols_OLD)
+    diffCols2 = cols_OLD.difference(cols_NEW)
+    for diff in diffCols:
+        del dfDiff[diff]
+    for diff in diffCols2:
+        del dfDiff[diff]
+        
     dfDiff = dfDiff.sort_index().fillna('')
 
     # save output as excel and format
@@ -84,11 +92,8 @@ def file_diff(path_OLD, path_NEW, index_col):
 
 def main(): 
 
-    if len(sys.argv) == 1:
-        print('\nPlease Provide File Paths To Compare Them')
-        sys.exit()
-    elif len(sys.argv) == 2:
-        print('\nSo Close, You Almost Had It... You Need Two File Paths To Compare Them')
+    if len(sys.argv) < 3:
+        print('\nPlease Provide Two File Paths To Compare')
         sys.exit()
     
     # get file name from args
