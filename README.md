@@ -6,3 +6,7 @@ compare.py takes two arguments: old_file_name, new_file_name
 compare.py file_path_1.csv file_path_2.csv
 
 compare.py file_path_1.xlsx file_path_2.xlsx
+
+# Future Changes:
+
+add ability to name the index column with argument 3
