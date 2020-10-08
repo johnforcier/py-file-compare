@@ -42,7 +42,8 @@ def file_diff(path_OLD, path_NEW, index_col):
         if row not in NEW.index:
             droppedRows.append(row)
             dfDiff = dfDiff.append(OLD.loc[row,:])
-
+    
+    # remove columns that are different in dfDiff only 
     diffCols = cols_NEW.difference(cols_OLD)
     diffCols2 = cols_OLD.difference(cols_NEW)
     for diff in diffCols:
